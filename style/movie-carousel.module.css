@@ -1,0 +1,60 @@
+/* movie-carousel.module.css */
+
+.carousel-container {
+  position: relative;
+  width: 100%;
+  max-width: 800px; /* 원하는 최대 너비로 조정 */
+  margin: auto;
+  overflow: hidden; /* 요소가 범위를 벗어나도 보이도록 설정 */
+}
+
+.carousel-inner {
+  display: flex;
+  transition: transform 0.5s ease; /* 부드럽게 슬라이드 이동 */
+}
+
+.carousel-item {
+  width: 120px; /* 각 슬라이드의 고정된 너비 */
+  flex-shrink: 0; /* 아이템이 줄어들지 않도록 고정 */
+  box-sizing: border-box;
+  margin-right: 10px; /* 슬라이드 간 간격 */
+  padding: 10px;
+  transition: transform 0.5s ease;
+}
+
+.carousel-item img {
+  opacity: 0.7;
+}
+
+.carousel-item.selected {
+  transform: scale(1.1); /* 선택된 아이템을 1.1배 확대 */
+}
+
+.carousel-item.selected img {
+  opacity: 1;
+}
+
+.carousel-button {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: rgba(0, 0, 0, 0.5);
+  color: #fff;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  z-index: 10;
+}
+
+.carousel-button.left {
+  left: 0;
+}
+
+.carousel-button.right {
+  right: 0;
+}
+
+.carousel-button:disabled {
+  background-color: rgba(0, 0, 0, 0.3);
+  cursor: not-allowed;
+}

@@ -1,10 +1,12 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
+import { useMovie } from '../app/context/MovieContext';
 import styles from '../style/movie-carousel.module.css';
 import Movie from './movie';
 
 export default function MovieCarousel({ movies }) {
+  const { setSelectedMovieCurrentIndex } = useMovie();
   const [currentIndex, setCurrentIndex] = useState(0);
   const carouselRef = useRef<HTMLUListElement>(null);
   const [maxIndex, setMaxIndex] = useState(0);
@@ -18,6 +20,12 @@ export default function MovieCarousel({ movies }) {
       setMaxIndex(movies.length - visibleSlides); // 이동 가능한 최대 인덱스 설정
     }
   }, [movies.length]);
+
+  useEffect(() => {
+    if (movies[currentIndex]) {
+      setSelectedMovieCurrentIndex(currentIndex);
+    }
+  }, [currentIndex, movies, setSelectedMovieCurrentIndex]);
 
   // 다음 슬라이드로 이동
   const handleNext = () => {

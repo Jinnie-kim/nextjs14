@@ -1,5 +1,6 @@
 import { Metadata } from 'next';
 import Navigation from '../components/navigation';
+import { MovieProvider } from './context/MovieContext';
 import '../style/global.css';
 
 export const metadata: Metadata = {
@@ -14,8 +15,10 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
       <body>
-        <Navigation />
-        {children}
+        <MovieProvider>
+          <Navigation />
+          {children}
+        </MovieProvider>
       </body>
     </html>
   );

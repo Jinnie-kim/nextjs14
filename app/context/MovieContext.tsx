@@ -7,7 +7,7 @@ export const MovieContext = createContext(null);
 
 // Provider 컴포넌트 정의
 export function MovieProvider({ children }) {
-  const [selectedMovieCurrentIndex, setSelectedMovieCurrentIndex] = useState('');
+  const [selectedMovieCurrentIndex, setSelectedMovieCurrentIndex] = useState(0);
 
   return <MovieContext.Provider value={{ selectedMovieCurrentIndex, setSelectedMovieCurrentIndex }}>{children}</MovieContext.Provider>;
 }

@@ -27,8 +27,8 @@ export default function MovieOverview({ movies }) {
       try {
         const res = await fetch(`${API_URL}/${currentMovie?.id}/credits`);
         const data = await res.json();
-
-        setMovieStarring(data);
+        const editData = data.slice(0, 5);
+        setMovieStarring(editData);
       } catch (error) {
         console.error(`Failed to fetch movie `, error);
       }
@@ -37,7 +37,7 @@ export default function MovieOverview({ movies }) {
       try {
         const res = await fetch(`${API_URL}/${currentMovie?.id}/videos`);
         const data = await res.json();
-        setMovieVideos(data.slice(0, 10));
+        setMovieVideos(data.slice(0, 5));
       } catch (error) {
         console.error(`Failed to fetch movie `, error);
       }
@@ -46,55 +46,59 @@ export default function MovieOverview({ movies }) {
     fetchMovieStarring();
     fetchMovieVideos();
   }, [selectedMovieCurrentIndex]);
-
-  console.log('movieDetail::::', movieDetail);
-  console.log('movieStarring:::', movieStarring);
+  console.log(movieDetail);
 
   return (
+    // Movie overview background image
     <div className={styles.overviewBackgroundImage} style={{ backgroundImage: `url(${currentMovie?.backdrop_path})` }}>
-      <div className={styles.overviewContainer}>
-        {/* movie overview - left part */}
-        <div>
-          <h1>{movieDetail?.title}</h1>
-          <ul>
-            <li>{movieDetail?.release_date}</li>•
-            <li>
-              {movieDetail?.genres.map((genre) => (
-                <span key={genre.id}>{genre.name} |</span>
-              ))}
-            </li>
-          </ul>
-          <p>{movieDetail?.overview}</p>
+      {/* movie overview - left part */}
+      <div className={styles.overviewLeft}>
+        <h1>{movieDetail?.title}</h1>
 
-          <h2>STARRING: </h2>
+        <div className={styles.overviewLeftInfo}>
+          <span>{movieDetail?.release_date.slice(0, 4)} |</span>
           <ul>
+            {movieDetail?.genres.map((genre) => (
+              <li key={genre.id}>{genre.name}</li>
+            ))}
+          </ul>
+        </div>
+
+        <p>{movieDetail?.overview}</p>
+
+        <div>
+          <h2>Starring</h2>
+          <ul className={styles.overviewStarringList}>
             {movieStarring?.map((charcter) => (
-              <li>
+              <li key={charcter.cast_id}>
+                {/* <span>{charcter.original_name}</span> */}
                 <img src={charcter.profile_path} alt={charcter.original_name} />
               </li>
             ))}
           </ul>
-          <div>
-            <button>Play Now</button>
-            <button>+My Wishlist</button>
-          </div>
         </div>
-        {/* video list - right part */}
+
         <div>
-          <ul>
-            {movieVideos?.map((movieVideo) => (
-              <li>
-                <iframe
-                  key={movieVideo.id}
-                  src={`https://youtube.com/embed/${movieVideo.key}`}
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
-                  title={movieVideo.name}
-                />
-              </li>
-            ))}
-          </ul>
+          <button>Play Now</button>
+          <button>+ My WishList</button>
         </div>
+      </div>
+
+      {/* movie overview - right part */}
+      <div className={styles.overviewRight}>
+        <ul className={styles.movieVideoLists}>
+          {movieVideos?.map((movieVideo) => (
+            <li key={movieVideo.id}>
+              <iframe
+                key={movieVideo.id}
+                src={`https://youtube.com/embed/${movieVideo.key}`}
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+                title={movieVideo.name}
+              />
+            </li>
+          ))}
+        </ul>
       </div>
     </div>
   );
